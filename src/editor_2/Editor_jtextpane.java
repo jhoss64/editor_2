@@ -35,8 +35,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.EditorKit;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.rtf.RTFEditorKit;
-import javax.swing.SwingConstants;
-import javax.swing.JSplitPane;
 import javax.swing.JPanel;
 
 public class Editor_jtextpane {
