@@ -1,5 +1,6 @@
 package editor_2;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
@@ -34,6 +35,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.EditorKit;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.rtf.RTFEditorKit;
+import javax.swing.SwingConstants;
+import javax.swing.JSplitPane;
+import javax.swing.JPanel;
 
 public class Editor_jtextpane {
 
@@ -80,9 +84,10 @@ public class Editor_jtextpane {
 	 */
 	private void initialize() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 678, 544);
+		//frame.setBounds(100, 100, 678, 544);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frame.getContentPane().setLayout(new BorderLayout());
+		frame.setSize(678, 544);
 		frame.setLocationRelativeTo(null);
 		UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 
@@ -100,8 +105,9 @@ public class Editor_jtextpane {
 			
 	    
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(10, 56, 642, 438);
-		frame.getContentPane().add(tabbedPane);
+		tabbedPane.setMinimumSize(new java.awt.Dimension(600, 450));
+		//tabbedPane.setMaximumSize(JFrame.MAXIMIZED_BOTH);
+		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		tabbedPane.addTab("NuevaPestaña", null, scrollPane, null);
@@ -109,9 +115,12 @@ public class Editor_jtextpane {
 		textPane = new JTextPane();
 		scrollPane.setViewportView(textPane);
 		
+		JPanel panel = new JPanel();
+		frame.getContentPane().add(panel, BorderLayout.NORTH);
+		panel.setLayout(new BorderLayout(0, 0));
+		
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBounds(0, 0, 662, 28);
-		frame.getContentPane().add(menuBar);
+		panel.add(menuBar, BorderLayout.NORTH);
 		
 		JMenu mnNewMenu = new JMenu("Archivo");
 		mnNewMenu.setForeground(Color.DARK_GRAY);
@@ -200,8 +209,9 @@ public class Editor_jtextpane {
 		menuBar.add(mnCerrar);
 		
 		JToolBar toolBar = new JToolBar();
+		panel.add(toolBar, BorderLayout.SOUTH);
+		toolBar.setFloatable(false);
 		toolBar.setBounds(0, 26, 662, 28);
-		frame.getContentPane().add(toolBar);
 		
 		JButton btnAadirNuevo = new JButton("");
 		btnAadirNuevo.setToolTipText("Nuevo");
