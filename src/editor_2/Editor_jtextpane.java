@@ -29,6 +29,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextPane;
 import javax.swing.JToolBar;
+import javax.swing.JViewport;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -206,6 +207,8 @@ public class Editor_jtextpane {
 		mnCerrar.setFont(new Font("Trebuchet MS", Font.BOLD, 14));
 		menuBar.add(mnCerrar);
 		
+		
+		
 		JToolBar toolBar = new JToolBar();
 		panel.add(toolBar, BorderLayout.SOUTH);
 		toolBar.setFloatable(false);
@@ -239,6 +242,7 @@ public class Editor_jtextpane {
 		button_1.setIcon(new ImageIcon(Editor_jtextpane.class.getResource("/editor_2/images/save.png")));
 		toolBar.add(button_1);
 		
+		
 		JButton button_2 = new JButton("");
 		button_2.setToolTipText("Guardar como");
 		button_2.addActionListener(new ActionListener() {
@@ -247,6 +251,20 @@ public class Editor_jtextpane {
 		});
 		button_2.setIcon(new ImageIcon(Editor_jtextpane.class.getResource("/editor_2/images/iconfinder_Save_as_132230.png")));
 		toolBar.add(button_2);
+		
+		JButton cerrarTab = new JButton("");
+		cerrarTab.setToolTipText("Cerrar Pestaña");
+		toolBar.add(cerrarTab);
+		cerrarTab.setIcon(new ImageIcon(Editor_jtextpane.class.getResource("/editor_2/images/exit.gif")));
+		
+		cerrarTab.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				tabbedPane.remove(tabbedPane.getSelectedComponent());
+				
+			}
+		});
 		btnAadirNuevo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -271,9 +289,12 @@ public class Editor_jtextpane {
 		}
 		
 		System.out.println(nombre_textPane);
-				
-		textPane_prueba = textPane;
 		
+		JScrollPane jscrollpane =(JScrollPane)tabbedPane.getSelectedComponent();
+		JViewport viewPort = (JViewport) jscrollpane.getComponent(0);
+		JTextPane textPane_prueba = (JTextPane)viewPort.getComponent(0);
+				
+	 			
 		JFileChooser file=new JFileChooser();
 		FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.2jav", "2jav");
 		file.setFileFilter(filtro);
@@ -292,16 +313,32 @@ public class Editor_jtextpane {
 				
 				File  tosave = file.getSelectedFile();
 				tosave = new File(tosave.toString() + ".2jav"); 
+				
 			try {
 				
 				OutputStream out = new FileOutputStream(tosave);
 				kit.write(out,doc,0,len);
 				out.close();
+				
+								
 			} catch (Exception ex) {
 				
 			}
+							
 			file.rescanCurrentDirectory();
-		}
+		
+			try {
+				InputStream in = new FileInputStream(tosave);
+				kit.read(in, doc, 0);
+				textPane_prueba.setDocument(doc);
+				in.close();
+				//tabbedPane.setName(tosave.toString() + ".2jav");;
+				
+			} catch (Exception ex) {
+				
+			}
+			
+			}
 		};				
 		guardar.start();
 		
@@ -335,12 +372,12 @@ public class Editor_jtextpane {
 			    caption_tab_asignado = reada.getName();
 			    
 			    JScrollPane nom_variable_scroll = new JScrollPane();
-				tabbedPane.insertTab(caption_tab_asignado, null, nom_variable_scroll, null, num_pestañas);//(caption_tab_asignado , null, nom_variable_scroll, null);
+				tabbedPane.add(caption_tab_asignado,  nom_variable_scroll);
 				
 				JTextPane nom_variable_textPane = new JTextPane();
 				nom_variable_scroll.setViewportView(nom_variable_textPane);		
 				
-				tabbedPane.setSelectedIndex(num_pestañas);
+				//tabbedPane.setSelectedIndex(num_pestañas);
 				
 			try {
 				InputStream in = new FileInputStream(reada);
