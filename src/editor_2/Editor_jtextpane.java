@@ -11,7 +11,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -33,6 +35,7 @@ import javax.swing.JViewport;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.EditorKit;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.rtf.RTFEditorKit;
@@ -319,24 +322,74 @@ public class Editor_jtextpane {
 				OutputStream out = new FileOutputStream(tosave);
 				kit.write(out,doc,0,len);
 				out.close();
-				
-								
+				caption_tab_asignado = tosave.getName();
+				int a = tabbedPane.getSelectedIndex();
+				tabbedPane.setTitleAt(a, caption_tab_asignado);	
 			} catch (Exception ex) {
 				
 			}
 							
 			file.rescanCurrentDirectory();
-		
-			try {
-				InputStream in = new FileInputStream(tosave);
-				kit.read(in, doc, 0);
-				textPane_prueba.setDocument(doc);
-				in.close();
+			textPane_prueba.setText(" ");	
+			StyledDocument doc = textPane_prueba.getStyledDocument();
+				InputStream in;
+				try {
+					in = new FileInputStream(tosave);
+					kit.read(in, doc, 0);
+					textPane_prueba.setDocument(doc);
+					in.close();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (BadLocationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				//tabbedPane.setName(tosave.toString() + ".2jav");;
+			
+			/*
+			textPane.setText(" ");
+			
+			StyledDocument doc1 = textPane.getStyledDocument();
+			
+			File  reada = tosave;
+			
+			num_pestañas = tabbedPane.getTabCount();
+				    			    
+		    nom_variable_scroll = reada.getName();
+		    nom_variable_textPane = reada.getName();
+		    caption_tab_asignado = reada.getName();
+		    
+		    JScrollPane nom_variable_scroll = new JScrollPane();
+			tabbedPane.add(caption_tab_asignado,  nom_variable_scroll);
+			
+			JTextPane nom_variable_textPane = new JTextPane();
+			nom_variable_scroll.setViewportView(nom_variable_textPane);		
+			
+			tabbedPane.setSelectedIndex(num_pestañas);
+			
+			InputStream in;
+			try {
+				in = new FileInputStream(reada);
+				kit.read(in, doc1, 0);
+				nom_variable_textPane.setDocument(doc1);
+				in.close();
 				
-			} catch (Exception ex) {
-				
-			}
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (BadLocationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+		
 			
 			}
 		};				
@@ -346,16 +399,17 @@ public class Editor_jtextpane {
 
 	protected void funcion_abrir() {
 		// TODO Auto-generated method stub
-
+		
 		JFileChooser file =new JFileChooser();
 		
 		FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.2jav", "2jav");
 		file.setFileFilter(filtro);
 		
+		textPane.setText(" ");
+		
 		EditorKit kit = new RTFEditorKit();
 		StyledDocument doc1 = textPane.getStyledDocument();
 		textPane.setEditorKit(kit);
-		
 		Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
 					
 		Thread abrir = new Thread() {
@@ -377,7 +431,7 @@ public class Editor_jtextpane {
 				JTextPane nom_variable_textPane = new JTextPane();
 				nom_variable_scroll.setViewportView(nom_variable_textPane);		
 				
-				//tabbedPane.setSelectedIndex(num_pestañas);
+				tabbedPane.setSelectedIndex(num_pestañas);
 				
 			try {
 				InputStream in = new FileInputStream(reada);
