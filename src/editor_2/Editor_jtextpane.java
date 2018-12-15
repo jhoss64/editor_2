@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -282,17 +284,7 @@ public class Editor_jtextpane {
 	
 	protected void funcion_guardar() {
 		// TODO Auto-generated method stub
-		int a = tabbedPane.getSelectedIndex();
-		String nombre_textPane = "";
-		
-		if (a==0) {
-			nombre_textPane = "textPane";
-		} else {
-			nombre_textPane = "textPane"+a;
-		}
-		
-		System.out.println(nombre_textPane);
-		
+			
 		JScrollPane jscrollpane =(JScrollPane)tabbedPane.getSelectedComponent();
 		JViewport viewPort = (JViewport) jscrollpane.getComponent(0);
 		JTextPane textPane_prueba = (JTextPane)viewPort.getComponent(0);
@@ -304,7 +296,8 @@ public class Editor_jtextpane {
 		
 		EditorKit kit = new RTFEditorKit();
 		StyledDocument doc = textPane_prueba.getStyledDocument();
-		int len = doc.getLength();				// TODO Auto-generated method stub
+		int len = doc.getLength();		
+		
 		textPane_prueba.setEditorKit(kit);
 		
 		Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
@@ -316,6 +309,20 @@ public class Editor_jtextpane {
 				
 				File  tosave = file.getSelectedFile();
 				tosave = new File(tosave.toString() + ".2jav"); 
+				File Ffichero  =new File("D:\\editor300\\"+tosave.getName()+".back");
+				try {
+					if(!Ffichero.exists()){
+			               Ffichero.createNewFile();
+			        }
+					OutputStream check = new FileOutputStream(Ffichero);
+					kit.write(check, doc, 0, len);
+					check.close();
+				} catch (IOException | BadLocationException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
 				
 			try {
 				
@@ -349,48 +356,6 @@ public class Editor_jtextpane {
 					e.printStackTrace();
 				}
 				
-				//tabbedPane.setName(tosave.toString() + ".2jav");;
-			
-			/*
-			textPane.setText(" ");
-			
-			StyledDocument doc1 = textPane.getStyledDocument();
-			
-			File  reada = tosave;
-			
-			num_pestañas = tabbedPane.getTabCount();
-				    			    
-		    nom_variable_scroll = reada.getName();
-		    nom_variable_textPane = reada.getName();
-		    caption_tab_asignado = reada.getName();
-		    
-		    JScrollPane nom_variable_scroll = new JScrollPane();
-			tabbedPane.add(caption_tab_asignado,  nom_variable_scroll);
-			
-			JTextPane nom_variable_textPane = new JTextPane();
-			nom_variable_scroll.setViewportView(nom_variable_textPane);		
-			
-			tabbedPane.setSelectedIndex(num_pestañas);
-			
-			InputStream in;
-			try {
-				in = new FileInputStream(reada);
-				kit.read(in, doc1, 0);
-				nom_variable_textPane.setDocument(doc1);
-				in.close();
-				
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (BadLocationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-		
-			
 			}
 		};				
 		guardar.start();
